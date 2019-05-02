@@ -20,7 +20,10 @@ Function Get-GPClientSideExtensions() {
 
     $systemRoot = $env:SystemRoot
 
-    $gptExtPaths = [string[]]@('hklm:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\','hklm:\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\')
+    $gptExtPaths = [string[]]@('hklm:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\')
+    if ([System.Environment]::Is64BitOperatingSystem) {
+        $gptExtPaths+='hklm:\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\'
+    }
 
     $gptExtPaths | ForEach-Object {
         # can't use below code because it skips the registry CSE GUID due to the subkey not having any defined value names (other default, which is empty) under it
